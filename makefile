@@ -12,7 +12,8 @@
 
 # The toolchain to use. arm-none-eabi works, but there does exist 
 # arm-bcm2708-linux-gnueabi.
-ARMGNU = arm-none-eabi
+#ARMGNU = arm-none-eabi-
+ARMGNU=""
 
 # The intermediate directory for compiled object files.
 BUILD = build/
@@ -49,24 +50,25 @@ rebuild: all
 
 # Rule to make the listing file.
 $(LIST) : $(BUILD)output.elf
-	$(ARMGNU)-objdump -d $(BUILD)output.elf > $(BUILD)$(LIST)
+	$(ARMGNU)objdump -d $(BUILD)output.elf > $(BUILD)$(LIST)
 
 # Rule to make the image file.
 $(TARGET) : $(BUILD)output.elf
-	$(ARMGNU)-objcopy $(BUILD)output.elf -O binary $(BUILD)$(TARGET) 
+	$(ARMGNU)objcopy $(BUILD)output.elf -O binary $(BUILD)$(TARGET) 
 
 # Rule to make the elf file.
 $(BUILD)output.elf : $(OBJECTS) $(LINKER)
-	$(ARMGNU)-ld $(AOBJ) $(COBJ) -Map $(BUILD)$(MAP) -o $(BUILD)output.elf -T $(LINKER)
+	$(ARMGNU)ld $(AOBJ) $(COBJ) -Map $(BUILD)$(MAP) -o $(BUILD)output.elf -T $(LINKER)
 
 # Rule to make the object files.
 $(BUILD)%.o: $(SOURCE)%.s
-	$(ARMGNU)-as -I $(SOURCE) $< -o $@
+	$(ARMGNU)as -I $(SOURCE) $< -o $@
 
 # Rule to make the object files.
 $(BUILD)%.o: $(SOURCE)%.c
-	$(ARMGNU)-gcc -I $(SOURCE) -c $< -o $@
+	$(ARMGNU)gcc -I $(SOURCE) -c $< -o $@
 
 # Rule to clean files.
 clean : 
 	-rm -rf $(BUILD)
+
